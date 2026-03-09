@@ -1,0 +1,52 @@
+# choose file interactively
+student6 <- read.table(file.choose(), header = TRUE, stringsAsFactors = FALSE)
+student6
+# separating  1 variable into 4 separate
+student6$Name <- sub(",.*", "", student6$Name.Age.Sex.Grade)
+student6$all  <- sub("^[^,]*,", "", student6$Name.Age.Sex.Grade)
+student6$Age <- sub(",.*", "", student6$all) 
+student6$all  <- sub("^[^,]*,", "", student6$all) 
+student6$Sex <- sub(",.*", "", student6$all) 
+student6$all  <- sub("^[^,]*,", "", student6$all)
+names(student6)[names(student6) == "all"] <- "Grade"
+
+# troubleshoot error: In mean.default(Grade, na.rm = TRUE) : 
+#argument is not numeric or logical: returning NA
+str(student6$Grade)
+student6$Grade <- as.numeric(student6$Grade)
+
+# compute mean of grade by sex
+library(plyr)
+gender_mean <- ddply(
+  student6,
+  "Sex",
+  summarise,
+  GradeAverage = mean(Grade, na.rm = TRUE)
+)
+
+#write grouped means into text file
+write.table(
+  gender_mean,
+  file = "gender_mean.txt",
+  sep  = "\t",
+  row.names = FALSE
+)
+
+#filter names containing "i"
+i_students <- subset(
+  student6,
+  grepl("i", Name, ignore.case = TRUE)
+)
+#write names to csv
+write.csv(
+  i_students$Name,
+  file      = "i_students.csv",
+  row.names = FALSE,
+  quote     = FALSE
+)
+#export dataset
+write.csv(
+  i_students,
+  file      = "i_students_full.csv",
+  row.names = FALSE
+)
