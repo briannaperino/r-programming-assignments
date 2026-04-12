@@ -1,0 +1,50 @@
+---
+title: "Perino_R_Markdown"
+output: pdf_document
+date: "2026-04-12"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+An R Markdown file is a very useful tool in research and coding, especially for reporducible work. With this, you can write explanations (paragraphs such as this), code and outputs all in one document (PDF) or HTML when you "knit" it. 
+
+
+## LaTex math expression
+$\frac{a}{b}$
+
+# Background on iris dataset
+The iris dataset is a built-in dataset with 150 data samples of iris flowers. There are three species, each with several variables measured such as sepal length, sepal width, petal length and petal width. I used this dataset to create a sepal length vs width plot, colored based on species. 
+
+## Load iris dataset
+```{r}
+# Load iris dataset
+data(iris)
+```
+
+## Plot: scatter plot of Sepal length by width, colored by species
+
+```{r}
+library(ggplot2)
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point(size = 2) +
+  labs(
+    title = "Iris Dataset Scatter Plot",
+    x = "Sepal Length",
+    y = "Sepal Width"
+  ) +
+  scale_color_manual(values = c(
+    setosa = "#BFEFFF",
+    versicolor = "#C1FFC1",
+    virginica = "#FFFACD"
+  )) +
+  theme_minimal()
+```
+
+
+## Summary 
+I prefer to use R markdown than writing plain reports because in my opinion it is easier and more organized to keep everything in one place. The code is updated instantly and it is easier to keep track of the any background information or notes that is necessary to understand the data being analysed and displayed. This is especially useful when you are doing a statistical analysis with a large dataset and can have the table displayed with p-values right away without having to constantly refer to several other files or reports.
